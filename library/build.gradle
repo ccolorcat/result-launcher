@@ -1,15 +1,16 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
     namespace 'cc.colorcat.runtime'
-    compileSdk 32
+    compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdk 23
-        targetSdk 32
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,11 +32,29 @@ android {
 }
 
 dependencies {
+    implementation(rootProject.ext.coreKtx)
+    implementation(rootProject.ext.appcompat)
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation(rootProject.ext.junit)
+    androidTestImplementation(rootProject.ext.androidJunit)
+    androidTestImplementation(rootProject.ext.espressoCore)
+
+    implementation(rootProject.ext.kotlinxCoroutinesAndroid)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = rootProject.ext.groupId
+                artifactId = 'result-launcher'
+                version = rootProject.ext.versionName
+            }
+        }
+    }
 }
