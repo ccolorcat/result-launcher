@@ -50,4 +50,6 @@ dependencies {
 
     implementation(rootProject.ext.kotlinxCoroutinesAndroid)
     implementation(rootProject.ext.lifecycleRuntimeKtx)
+
+//    implementation("com.github.ccolorcat:result-launcher:1.0.0")
 }

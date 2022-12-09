@@ -7,7 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 
 /**
- * After calling the launch method, the missing permissions will be requested,
+ * After calling the [ResultLauncher.launch] method, the missing permissions will be requested,
  * and the denied permissions will be returned in an array.
  * If the returned array is empty, it means that all permissions have been granted.
  *
@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
  * Date: 2022-12-08
  * GitHub: https://github.com/ccolorcat
  */
-class ForPermission(
+class ForPermissions(
     permissions: Array<String>
 ) : ContextResultLauncher<Array<String>, Map<String, Boolean>, Array<String>>(
     ActivityResultContracts.RequestMultiplePermissions(),

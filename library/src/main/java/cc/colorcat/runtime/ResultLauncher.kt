@@ -67,6 +67,7 @@ open class ResultLauncher<I, O, R>(
 
     fun cancel() {
         continuation?.cancel()
+        continuation = null
     }
 
     suspend fun launch(): R {
@@ -80,26 +81,14 @@ open class ResultLauncher<I, O, R>(
 }
 
 
-fun ComponentActivity.forPermission(permission: String): ForPermission {
-    return ForPermission(arrayOf(permission)).also {
+fun ComponentActivity.forPermissions(permissions: Array<String>): ForPermissions {
+    return ForPermissions(permissions).also {
         it.register(this)
     }
 }
 
-fun ComponentActivity.forPermissions(permissions: Array<String>): ForPermission {
-    return ForPermission(permissions).also {
-        it.register(this)
-    }
-}
-
-fun Fragment.forPermission(permission: String): ForPermission {
-    return ForPermission(arrayOf(permission)).also {
-        it.register(this)
-    }
-}
-
-fun Fragment.forPermissions(permissions: Array<String>): ForPermission {
-    return ForPermission(permissions).also {
+fun Fragment.forPermissions(permissions: Array<String>): ForPermissions {
+    return ForPermissions(permissions).also {
         it.register(this)
     }
 }

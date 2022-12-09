@@ -4,8 +4,13 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import cc.colorcat.runtime.ForResult.Companion.CODE_COMPONENT_ABSENT
 
 /**
+ * An [ActivityResult] will be returned after calling the [ResultLauncher.launch] method.
+ * If no [android.app.Activity] can handle the [Intent], the ActivityResult's [ActivityResult.getResultCode]
+ * will be [CODE_COMPONENT_ABSENT] and the [ActivityResult.getData] will be null.
+ *
  * Author: ccolorcat
  * Date: 2022-12-08
  * GitHub: https://github.com/ccolorcat
