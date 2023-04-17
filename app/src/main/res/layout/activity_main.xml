@@ -33,4 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="request permissions" />
+
+    <Button
+        android:id="@+id/requestScreenCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="request screen capture" />
 </LinearLayout>

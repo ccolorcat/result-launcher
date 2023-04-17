@@ -1,7 +1,9 @@
 package cc.colorcat.runtime
 
+import android.content.Context
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
@@ -103,4 +105,16 @@ fun Fragment.forResult(intent: Intent): ForResult {
     return ForResult(intent).also {
         it.register(this)
     }
+}
+
+suspend fun Context.launchForResult(intent: Intent): ActivityResult {
+    return ResultHelper.requestForResult(this, intent)
+}
+
+suspend fun Context.launchForResult(action: suspend (activity: ComponentActivity, requestCode: Int) -> ActivityResult?): ActivityResult {
+    return ResultHelper.requestForResult(this, action)
+}
+
+suspend fun Context.launchForPermissions(permissions: Array<String>): Array<String> {
+    return ResultHelper.requestForPermissions(this, permissions)
 }

@@ -40,6 +40,7 @@ dependencies {
     androidTestImplementation(rootProject.ext.espressoCore)
 
     implementation(rootProject.ext.kotlinxCoroutinesAndroid)
+    implementation(rootProject.ext.lifecycleRuntimeKtx)
 }
 
 afterEvaluate {
