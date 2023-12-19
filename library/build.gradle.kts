@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "cc.colorcat.runtime"
-    compileSdk = 34
+    namespace = BuildConfig.groupId
+    compileSdk = BuildConfig.compileSdk
 
     defaultConfig {
-        minSdk = 23
+        minSdk = BuildConfig.minSdk
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -23,24 +23,24 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = BuildConfig.javaVersion
+        targetCompatibility = BuildConfig.javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = BuildConfig.jvmTarget
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation(Libs.Remote.coreKtx)
+    implementation(Libs.Remote.appcompat)
+    implementation(Libs.Remote.kotlinxCoroutinesAndroid)
+    implementation(Libs.Remote.lifecycleRuntimeKtx)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(Libs.Test.junit)
+    androidTestImplementation(Libs.Test.androidJunit)
+    androidTestImplementation(Libs.Test.androidEspressoCore)
 }
 
 afterEvaluate {
@@ -48,9 +48,9 @@ afterEvaluate {
         publications {
             // Creates a Maven publication called "release".
             register<MavenPublication>("release") {
-                groupId = "cc.colorcat.runtime"
+                groupId = BuildConfig.groupId
                 artifactId = "result-launcher"
-                version = "1.1.0"
+                version = BuildConfig.versionName
 
                 project.afterEvaluate {
                     from(components["release"])

@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "cc.colorcat.runtime.sample"
-    compileSdk = 34
+    compileSdk = BuildConfig.compileSdk
 
     defaultConfig {
         applicationId = "cc.colorcat.runtime.sample"
-        minSdk = 23
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.1.0"
+        minSdk = BuildConfig.minSdk
+        targetSdk = BuildConfig.targetSdk
+        versionCode = BuildConfig.versionCode
+        versionName = BuildConfig.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,12 +25,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = BuildConfig.javaVersion
+        targetCompatibility = BuildConfig.javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = BuildConfig.jvmTarget
     }
 
     buildFeatures {
@@ -40,11 +40,15 @@ android {
 
 dependencies {
     implementation(project(":library"))
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation(Libs.Remote.coreKtx)
+    implementation(Libs.Remote.appcompat)
+    implementation(Libs.Remote.material)
+    implementation(Libs.Remote.kotlinxCoroutinesAndroid)
+    implementation(Libs.Remote.lifecycleRuntimeKtx)
+
+    testImplementation(Libs.Test.junit)
+    androidTestImplementation(Libs.Test.androidJunit)
+    androidTestImplementation(Libs.Test.androidEspressoCore)
 
 //    implementation("com.github.ccolorcat:result-launcher:1.1.0")
 }
