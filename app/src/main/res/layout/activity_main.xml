@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     tools:ignore="HardcodedText">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="480dp"
-        android:layout_height="480dp"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
 
-    <Button
-        android:id="@+id/pickImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="pick image" />
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="480dp"
+            android:layout_height="480dp"
+            tools:ignore="ContentDescription" />
 
-    <Button
-        android:id="@+id/requestPermissions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="request permissions" />
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
 
-    <Button
-        android:id="@+id/requestScreenCapture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="request screen capture" />
-</LinearLayout>
+        <Button
+            android:id="@+id/pickImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="pick image" />
+
+        <Button
+            android:id="@+id/requestPermissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="request permissions" />
+
+        <Button
+            android:id="@+id/requestScreenCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="request screen capture" />
+    </LinearLayout>
+</ScrollView>

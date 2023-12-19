@@ -1,10 +1,10 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import cc.colorcat.runtime.ForResult.Companion.CODE_COMPONENT_ABSENT
+import cc.colorcat.runtime.CODE_COMPONENT_ABSENT
 
 /**
  * An [ActivityResult] will be returned after calling the [ResultLauncher.launch] method.
@@ -15,7 +15,7 @@ import cc.colorcat.runtime.ForResult.Companion.CODE_COMPONENT_ABSENT
  * Date: 2022-12-08
  * GitHub: https://github.com/ccolorcat
  */
-class ForResult(
+internal class ForResult(
     input: Intent
 ) : ResultLauncher<Intent, ActivityResult, ActivityResult>(
     ActivityResultContracts.StartActivityForResult(),
@@ -28,9 +28,5 @@ class ForResult(
         } else {
             super.transformException(throwable)
         }
-    }
-
-    companion object {
-        const val CODE_COMPONENT_ABSENT = -1000
     }
 }

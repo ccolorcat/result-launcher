@@ -1,8 +1,9 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.content.ActivityNotFoundException
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
+import cc.colorcat.runtime.CODE_COMPONENT_ABSENT
 
 /**
  * Author: ccolorcat
@@ -29,7 +30,7 @@ internal class ActionAndReceiver<T>(private val action: Action<T>, private val r
             }
         } catch (e: ActivityNotFoundException) {
             try {
-                deliver(ActivityResult(ForResult.CODE_COMPONENT_ABSENT, null))
+                deliver(ActivityResult(CODE_COMPONENT_ABSENT, null))
                 true
             } catch (e: ClassCastException) {
                 false

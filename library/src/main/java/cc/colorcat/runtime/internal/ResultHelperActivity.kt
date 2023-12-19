@@ -1,4 +1,4 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.app.Activity
 import android.content.Context

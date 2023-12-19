@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".ResultHelperActivity"
+            android:name=".internal.ResultHelperActivity"
             android:theme="@style/ResultHelperTheme" />
     </application>
 </manifest>

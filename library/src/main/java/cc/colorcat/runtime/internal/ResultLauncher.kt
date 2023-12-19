@@ -1,9 +1,7 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.content.Context
-import android.content.Intent
 import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
@@ -84,41 +82,4 @@ open class ResultLauncher<I, O, R>(
     protected open suspend fun launch(input: I, launcher: ActivityResultLauncher<I>, provide: () -> Context?): R {
         return performLaunch(input, launcher)
     }
-}
-
-
-fun ComponentActivity.forPermissions(permissions: Array<String>): ForPermissions {
-    return ForPermissions(permissions).also {
-        it.register(this)
-    }
-}
-
-fun Fragment.forPermissions(permissions: Array<String>): ForPermissions {
-    return ForPermissions(permissions).also {
-        it.register(this)
-    }
-}
-
-fun ComponentActivity.forResult(intent: Intent): ForResult {
-    return ForResult(intent).also {
-        it.register(this)
-    }
-}
-
-fun Fragment.forResult(intent: Intent): ForResult {
-    return ForResult(intent).also {
-        it.register(this)
-    }
-}
-
-suspend fun Context.launchForResult(intent: Intent): ActivityResult {
-    return ResultHelper.requestForResult(this, intent)
-}
-
-suspend fun Context.launchForResult(action: suspend (activity: ComponentActivity, requestCode: Int) -> ActivityResult?): ActivityResult {
-    return ResultHelper.requestForResult(this, action)
-}
-
-suspend fun Context.launchForPermissions(permissions: Array<String>): Array<String> {
-    return ResultHelper.requestForPermissions(this, permissions)
 }

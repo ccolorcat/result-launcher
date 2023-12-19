@@ -1,4 +1,4 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import androidx.activity.result.ActivityResult
 import androidx.core.util.containsKey
 import androidx.core.util.size
 import androidx.lifecycle.Lifecycle
+import cc.colorcat.runtime.forPermissions
+import cc.colorcat.runtime.forResult
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 

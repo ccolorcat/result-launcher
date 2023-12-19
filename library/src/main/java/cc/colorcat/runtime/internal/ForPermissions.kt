@@ -1,4 +1,4 @@
-package cc.colorcat.runtime
+package cc.colorcat.runtime.internal
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
  * Date: 2022-12-08
  * GitHub: https://github.com/ccolorcat
  */
-class ForPermissions(
+internal class ForPermissions(
     permissions: Array<String>
 ) : ResultLauncher<Array<String>, Map<String, Boolean>, Array<String>>(
     ActivityResultContracts.RequestMultiplePermissions(),

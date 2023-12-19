@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import cc.colorcat.runtime.forMedia
 import cc.colorcat.runtime.forPermissions
 import cc.colorcat.runtime.forResult
-import cc.colorcat.runtime.launchForPermissions
 import cc.colorcat.runtime.launchForResult
 import cc.colorcat.runtime.sample.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private val pickImageIntent: Intent
         get() = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
 
+    private val pickMultipleImages = forMedia(5, ActivityResultContracts.PickVisualMedia.ImageOnly)
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -39,19 +42,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setupPickImage()
+//        setupPickImage()
+        pickMultiImages()
         setupRequestPermissions()
         setupRequestScreenCapture()
+    }
+
+    private fun pickMultiImages() {
+        binding.pickImage.setOnClickListener {
+            lifecycleScope.launch {
+                val uris = pickMultipleImages.launch()
+                binding.message.text = uris.toString()
+                binding.image.setImageURI(uris.lastOrNull())
+            }
+        }
     }
 
     private fun setupPickImage() {
         binding.pickImage.setOnClickListener {
             lifecycleScope.launch {
                 // The first method is recommended to be used inside Activity or Fragment.
-                val result = resultLauncher.launch()
+//                val result = resultLauncher.launch()
 
                 // The second method is recommended if you can only get the Context.
-//                val result = application.launchForResult(pickImageIntent)
+                val result = application.launchForResult(pickImageIntent)
 
                 // The third method is recommended if you have more complex requirements.
 //                val result = launchForResult { activity, requestCode ->
