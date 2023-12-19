@@ -12,6 +12,7 @@ import cc.colorcat.runtime.internal.ForResult
 import cc.colorcat.runtime.internal.ResultHelper
 import cc.colorcat.runtime.internal.ResultLauncher
 import cc.colorcat.runtime.internal.createPickMediaLauncher
+import cc.colorcat.runtime.internal.createPickMultipleMediaLauncher
 
 /**
  * Author: ccolorcat
@@ -32,6 +33,7 @@ fun Fragment.forPermissions(permissions: Array<String>): ResultLauncher<*, *, Ar
     }
 }
 
+
 fun ComponentActivity.forResult(intent: Intent): ResultLauncher<*, *, ActivityResult> {
     return ForResult(intent).also {
         it.register(this)
@@ -44,20 +46,38 @@ fun Fragment.forResult(intent: Intent): ResultLauncher<Intent, ActivityResult, A
     }
 }
 
+
 fun ComponentActivity.forMedia(
-    maxItems: Int,
     mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType
-): ResultLauncher<*, *, List<Uri>> {
-    return createPickMediaLauncher(maxItems, mediaType).also {
+): ResultLauncher<*, *, Uri?> {
+    return createPickMediaLauncher(mediaType).also {
         it.register(this)
     }
 }
 
 fun Fragment.forMedia(
+    mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType
+): ResultLauncher<*, *, Uri?> {
+    return createPickMediaLauncher(mediaType).also {
+        it.register(this)
+    }
+}
+
+
+fun ComponentActivity.forMultipleMedia(
     maxItems: Int,
     mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType
 ): ResultLauncher<*, *, List<Uri>> {
-    return createPickMediaLauncher(maxItems, mediaType).also {
+    return createPickMultipleMediaLauncher(maxItems, mediaType).also {
+        it.register(this)
+    }
+}
+
+fun Fragment.forMultipleMedia(
+    maxItems: Int,
+    mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType
+): ResultLauncher<*, *, List<Uri>> {
+    return createPickMultipleMediaLauncher(maxItems, mediaType).also {
         it.register(this)
     }
 }

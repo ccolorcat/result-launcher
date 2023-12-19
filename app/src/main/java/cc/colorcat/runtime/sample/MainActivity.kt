@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import cc.colorcat.runtime.forMedia
+import cc.colorcat.runtime.forMultipleMedia
 import cc.colorcat.runtime.forPermissions
 import cc.colorcat.runtime.forResult
 import cc.colorcat.runtime.launchForResult
@@ -21,7 +22,6 @@ const val TAG = "ResultLauncher"
 
 class MainActivity : AppCompatActivity() {
     private val permissions = arrayOf(
-        android.Manifest.permission.READ_EXTERNAL_STORAGE,
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.RECORD_AUDIO,
     )
@@ -33,7 +33,12 @@ class MainActivity : AppCompatActivity() {
     private val pickImageIntent: Intent
         get() = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
 
-    private val pickMultipleImages = forMedia(5, ActivityResultContracts.PickVisualMedia.ImageOnly)
+    private val pickMultipleImages = forMultipleMedia(
+        5,
+        ActivityResultContracts.PickVisualMedia.ImageOnly
+    )
+
+    private val pickImage = forMedia(ActivityResultContracts.PickVisualMedia.ImageOnly)
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -43,19 +48,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 //        setupPickImage()
-        pickMultiImages()
+        setupPickImage2()
         setupRequestPermissions()
         setupRequestScreenCapture()
-    }
-
-    private fun pickMultiImages() {
-        binding.pickImage.setOnClickListener {
-            lifecycleScope.launch {
-                val uris = pickMultipleImages.launch()
-                binding.message.text = uris.toString()
-                binding.image.setImageURI(uris.lastOrNull())
-            }
-        }
     }
 
     private fun setupPickImage() {
@@ -89,6 +84,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupPickImage2() {
+        binding.pickImage.setOnClickListener {
+            lifecycleScope.launch {
+//                val uri = pickImage.launch()
+                val uri = pickMultipleImages.launch().firstOrNull()
+                binding.message.text = uri.toString()
+                binding.image.setImageURI(uri)
+            }
+        }
+    }
+
     private fun setupRequestPermissions() {
         binding.requestPermissions.setOnClickListener {
             lifecycleScope.launch {
@@ -105,7 +111,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupRequestScreenCapture() {
         binding.requestScreenCapture.setOnClickListener {
             lifecycleScope.launch {
-                val result = launchForResult { activity, requestCode -> requestScreenCapture(activity, requestCode) }
+                val result = launchForResult { activity, requestCode ->
+                    requestScreenCapture(
+                        activity,
+                        requestCode
+                    )
+                }
                 Log.d(TAG, "request screen capture result: $result")
                 binding.message.text = result.toString()
             }
@@ -124,11 +135,18 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val RESULT_GET_MEDIA_PROJECT_MANAGER_FAILED = -100
         const val RESULT_START_SCREEN_CAPTURE_INTENT_FAILED = -101
-        private fun requestScreenCapture(activity: ComponentActivity, requestCode: Int): ActivityResult? {
+        private fun requestScreenCapture(
+            activity: ComponentActivity,
+            requestCode: Int
+        ): ActivityResult? {
             val manager = activity.getSystemService(MediaProjectionManager::class.java)
             return if (manager == null) {
                 ActivityResult(RESULT_GET_MEDIA_PROJECT_MANAGER_FAILED, null)
-            } else if (!activity.startActivityIfNeeded(manager.createScreenCaptureIntent(), requestCode)) {
+            } else if (!activity.startActivityIfNeeded(
+                    manager.createScreenCaptureIntent(),
+                    requestCode
+                )
+            ) {
                 ActivityResult(RESULT_START_SCREEN_CAPTURE_INTENT_FAILED, null)
             } else {
                 null
