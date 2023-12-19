@@ -10,9 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven("https://jitpack.io")
     }
 }
 rootProject.name = "result-launcher"
-include ':app'
-include ':library'
+include(":app")
+include(":library")
