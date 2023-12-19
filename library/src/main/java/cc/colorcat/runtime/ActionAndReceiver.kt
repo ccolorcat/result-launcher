@@ -14,6 +14,10 @@ internal typealias Receiver<T> = (result: T) -> Unit
 
 internal class ActionAndReceiver<T>(private val action: Action<T>, private val receiver: Receiver<T>) {
 
+    /**
+     * If the result is received by "receiver", it means the execution is successful,
+     * in which case it returns true, otherwise it returns false.
+     */
     suspend fun performAction(activity: ComponentActivity, requestCode: Int): Boolean {
         return try {
             val result = action.invoke(activity, requestCode)

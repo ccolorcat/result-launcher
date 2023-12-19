@@ -66,12 +66,14 @@ internal object ResultHelper {
 
     internal fun containsRequestCode(requestCode: Int): Boolean = actionAndReceivers.containsKey(requestCode)
 
+    /**
+     * Returns true if the action was executed successfully, false otherwise.
+     */
     internal suspend fun performAction(activity: ComponentActivity, requestCode: Int): Boolean {
-        return if (actionAndReceivers[requestCode]!!.performAction(activity, requestCode)) {
-            actionAndReceivers.remove(requestCode)
-            true
-        } else {
-            false
+        return actionAndReceivers[requestCode]!!.performAction(activity, requestCode).also { successful ->
+            if (successful) {
+                actionAndReceivers.remove(requestCode)
+            }
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -23,17 +22,18 @@ open class ResultLauncher<I, O, R>(
     private val input: I,
     private val transform: (O) -> R
 ) {
-    private var resultLauncher: ActivityResultLauncher<I>? = null
+    private var launcher: ActivityResultLauncher<I>? = null
     private var continuation: CancellableContinuation<R>? = null
+    private var contextProvider: (() -> Context?)? = null
 
-    @CallSuper
-    open fun register(activity: ComponentActivity) {
-        resultLauncher = activity.registerForActivityResult(contract, this::handleOutput)
+    fun register(activity: ComponentActivity) {
+        launcher = activity.registerForActivityResult(contract, this::handleOutput)
+        contextProvider = { activity }
     }
 
-    @CallSuper
-    open fun register(fragment: Fragment) {
-        resultLauncher = fragment.registerForActivityResult(contract, this::handleOutput)
+    fun register(fragment: Fragment) {
+        launcher = fragment.registerForActivityResult(contract, this::handleOutput)
+        contextProvider = { fragment.context }
     }
 
     private fun handleOutput(output: O) {
@@ -44,7 +44,7 @@ open class ResultLauncher<I, O, R>(
         this.continuation = null
     }
 
-    protected suspend fun realLaunch(launcher: ActivityResultLauncher<I>, input: I): R {
+    protected suspend fun performLaunch(input: I, launcher: ActivityResultLauncher<I>): R {
         return suspendCancellableCoroutine {
             continuation = it
             try {
@@ -73,12 +73,16 @@ open class ResultLauncher<I, O, R>(
     }
 
     suspend fun launch(): R {
-        val launcher = resultLauncher ?: throw RuntimeException("You must call register first.")
-        return launch(launcher, input)
+        val launcher = launcher
+        val provider = contextProvider
+        if (launcher == null || provider == null) {
+            throw RuntimeException("You must call register first.")
+        }
+        return launch(input, launcher, provider)
     }
 
-    protected open suspend fun launch(launcher: ActivityResultLauncher<I>, input: I): R {
-        return realLaunch(launcher, input)
+    protected open suspend fun launch(input: I, launcher: ActivityResultLauncher<I>, provide: () -> Context?): R {
+        return performLaunch(input, launcher)
     }
 }
 

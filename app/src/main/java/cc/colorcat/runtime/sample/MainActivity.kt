@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 val result = resultLauncher.launch()
 
                 // The second method is recommended if you can only get the Context.
-//                val result = launchForResult(pickImageIntent)
+//                val result = application.launchForResult(pickImageIntent)
 
                 // The third method is recommended if you have more complex requirements.
 //                val result = launchForResult { activity, requestCode ->

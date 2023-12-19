@@ -17,23 +17,24 @@ import androidx.core.content.ContextCompat
  */
 class ForPermissions(
     permissions: Array<String>
-) : ContextResultLauncher<Array<String>, Map<String, Boolean>, Array<String>>(
+) : ResultLauncher<Array<String>, Map<String, Boolean>, Array<String>>(
     ActivityResultContracts.RequestMultiplePermissions(),
     permissions,
     { result -> result.filter { !it.value }.keys.toTypedArray() },
 ) {
     override suspend fun launch(
-        context: Context,
+        input: Array<String>,
         launcher: ActivityResultLauncher<Array<String>>,
-        input: Array<String>
+        provide: () -> Context?
     ): Array<String> {
+        val context = provide() ?: throw RuntimeException("context is null.")
         val missingPermissions = input.filter {
             ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
         }
         return if (missingPermissions.isEmpty()) {
             emptyArray()
         } else {
-            realLaunch(launcher, missingPermissions.toTypedArray())
+            performLaunch(missingPermissions.toTypedArray(), launcher)
         }
     }
 }
