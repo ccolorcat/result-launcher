@@ -12,8 +12,8 @@ object BuildConfig {
     const val minSdk = 23
     const val targetSdk = compileSdk
 
-    const val versionCode = 3
-    const val versionName = "2.0.0"
+    const val versionCode = 4
+    const val versionName = "2.0.1"
 
     val javaVersion = JavaVersion.VERSION_1_8
     const val jvmTarget = "1.8"
