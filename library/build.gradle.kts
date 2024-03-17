@@ -11,6 +11,10 @@ android {
     defaultConfig {
         minSdk = BuildConfig.minSdk
 
+        aarMetadata {
+            minCompileSdk = BuildConfig.minSdk
+        }
+
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -30,6 +34,12 @@ android {
     kotlinOptions {
         jvmTarget = BuildConfig.jvmTarget
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -43,19 +53,23 @@ dependencies {
     androidTestImplementation(Libs.Test.androidEspressoCore)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            register<MavenPublication>("release") {
-                groupId = BuildConfig.groupId
-                artifactId = "result-launcher"
-                version = BuildConfig.versionName
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = BuildConfig.groupId
+            artifactId = "result-launcher"
+            version = BuildConfig.versionName
 
-                project.afterEvaluate {
-                    from(components["release"])
-                }
+            afterEvaluate {
+                from(components["release"])
             }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "LocalMaven"
+            url = project.uri("${project.rootProject.file("maven")}")
         }
     }
 }
