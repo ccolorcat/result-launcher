@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import cc.colorcat.runtime.forMedia
 import cc.colorcat.runtime.forMultipleMedia
@@ -16,6 +17,7 @@ import cc.colorcat.runtime.forPermissions
 import cc.colorcat.runtime.forResult
 import cc.colorcat.runtime.launchForResult
 import cc.colorcat.runtime.sample.databinding.ActivityMainBinding
+import cc.colorcat.runtime.takePicture
 import kotlinx.coroutines.launch
 
 const val TAG = "ResultLauncher"
@@ -29,6 +31,16 @@ class MainActivity : AppCompatActivity() {
     private val permissionsLauncher = forPermissions(permissions)
 
     private val resultLauncher = forResult(pickImageIntent)
+
+    private val cameraPermissionLauncher = forPermissions(arrayOf(android.Manifest.permission.CAMERA))
+
+    private val takePictureLauncher = takePicture {
+        FileProvider.getUriForFile(
+            this,
+            "${packageName}.fileprovider",
+            (externalCacheDir ?: cacheDir).resolve("${System.currentTimeMillis()}.jpg"),
+        )
+    }
 
     private val pickImageIntent: Intent
         get() = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
@@ -51,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         setupPickImage2()
         setupRequestPermissions()
         setupRequestScreenCapture()
+        setupTakePicture()
     }
 
     private fun setupPickImage() {
@@ -95,6 +108,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupTakePicture() {
+        binding.takePicture.setOnClickListener {
+            lifecycleScope.launch {
+                if (cameraPermissionLauncher.launch().isEmpty()) {
+                    val uri = takePictureLauncher.launch()
+                    binding.message.text = uri?.toString()
+                    binding.image.setImageURI(uri)
+                }
+            }
+        }
+    }
+
     private fun setupRequestPermissions() {
         binding.requestPermissions.setOnClickListener {
             lifecycleScope.launch {
@@ -131,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             "${deniedPermissions.contentToString()} have been denied."
         }
     }
+
 
     companion object {
         const val RESULT_GET_MEDIA_PROJECT_MANAGER_FAILED = -100

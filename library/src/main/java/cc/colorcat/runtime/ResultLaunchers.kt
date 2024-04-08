@@ -13,6 +13,7 @@ import cc.colorcat.runtime.internal.ResultHelper
 import cc.colorcat.runtime.internal.ResultLauncher
 import cc.colorcat.runtime.internal.createPickMediaLauncher
 import cc.colorcat.runtime.internal.createPickMultipleMediaLauncher
+import cc.colorcat.runtime.internal.createTakePictureLauncher
 
 /**
  * Author: ccolorcat
@@ -78,6 +79,19 @@ fun Fragment.forMultipleMedia(
     mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType
 ): ResultLauncher<*, *, List<Uri>> {
     return createPickMultipleMediaLauncher(maxItems, mediaType).also {
+        it.register(this)
+    }
+}
+
+
+fun ComponentActivity.takePicture(provideUri: () -> Uri): ResultLauncher<*, *, Uri?> {
+    return createTakePictureLauncher(provideUri).also {
+        it.register(this)
+    }
+}
+
+fun Fragment.takePicture(provideUri: () -> Uri): ResultLauncher<*, *, Uri?> {
+    return createTakePictureLauncher(provideUri).also {
         it.register(this)
     }
 }

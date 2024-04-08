@@ -17,12 +17,22 @@ import kotlin.coroutines.resumeWithException
  */
 open class ResultLauncher<I, O, R>(
     private val contract: ActivityResultContract<I, O>,
-    private val input: I,
+    private val provideInput: () -> I,
     private val transform: (O) -> R
 ) {
     private var launcher: ActivityResultLauncher<I>? = null
     private var continuation: CancellableContinuation<R>? = null
     private var contextProvider: (() -> Context?)? = null
+
+    constructor(
+        contract: ActivityResultContract<I, O>,
+        input: I,
+        transform: (O) -> R
+    ) : this(
+        contract = contract,
+        provideInput = { input },
+        transform = transform
+    )
 
     fun register(activity: ComponentActivity) {
         launcher = activity.registerForActivityResult(contract, this::handleOutput)
@@ -76,7 +86,7 @@ open class ResultLauncher<I, O, R>(
         if (launcher == null || provider == null) {
             throw RuntimeException("You must call register first.")
         }
-        return launch(input, launcher, provider)
+        return launch(provideInput(), launcher, provider)
     }
 
     protected open suspend fun launch(input: I, launcher: ActivityResultLauncher<I>, provide: () -> Context?): R {
