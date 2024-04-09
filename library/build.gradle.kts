@@ -43,10 +43,8 @@ android {
 }
 
 dependencies {
-    implementation(Libs.Remote.coreKtx)
-    implementation(Libs.Remote.appcompat)
-    implementation(Libs.Remote.kotlinxCoroutinesAndroid)
-    implementation(Libs.Remote.lifecycleRuntimeKtx)
+    implementation(Libs.Remote.activityKtx)
+    implementation(Libs.Remote.fragmentKtx)
 
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.Test.androidJunit)
