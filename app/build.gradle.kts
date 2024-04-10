@@ -50,5 +50,5 @@ dependencies {
     androidTestImplementation(Libs.Test.androidJunit)
     androidTestImplementation(Libs.Test.androidEspressoCore)
 
-//    implementation("com.github.ccolorcat:result-launcher:1.1.0")
+//    implementation("com.github.ccolorcat:result-launcher:dev-SNAPSHOT")
 }
