@@ -43,6 +43,8 @@ dependencies {
     implementation(Libs.Remote.coreKtx)
     implementation(Libs.Remote.appcompat)
     implementation(Libs.Remote.material)
+    implementation(Libs.Remote.activityKtx)
+    implementation(Libs.Remote.fragmentKtx)
     implementation(Libs.Remote.kotlinxCoroutinesAndroid)
     implementation(Libs.Remote.lifecycleRuntimeKtx)
 
