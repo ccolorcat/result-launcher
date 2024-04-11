@@ -39,6 +39,13 @@
             android:text="take picture" />
 
         <Button
+            android:id="@+id/getContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Get Content" />
+
+        <Button
             android:id="@+id/requestPermissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

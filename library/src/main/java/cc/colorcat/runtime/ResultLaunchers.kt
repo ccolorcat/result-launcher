@@ -11,6 +11,7 @@ import cc.colorcat.runtime.internal.ForPermissions
 import cc.colorcat.runtime.internal.ForResult
 import cc.colorcat.runtime.internal.ResultHelper
 import cc.colorcat.runtime.internal.ResultLauncher
+import cc.colorcat.runtime.internal.createGetContentLauncher
 import cc.colorcat.runtime.internal.createPickMediaLauncher
 import cc.colorcat.runtime.internal.createPickMultipleMediaLauncher
 import cc.colorcat.runtime.internal.createTakePictureLauncher
@@ -92,6 +93,19 @@ fun ComponentActivity.takePicture(provideUri: () -> Uri): ResultLauncher<*, *, U
 
 fun Fragment.takePicture(provideUri: () -> Uri): ResultLauncher<*, *, Uri?> {
     return createTakePictureLauncher(provideUri).also {
+        it.register(this)
+    }
+}
+
+
+fun ComponentActivity.getContent(mimeType: String): ResultLauncher<*, *, Uri?> {
+    return createGetContentLauncher(mimeType).also {
+        it.register(this)
+    }
+}
+
+fun Fragment.getContent(mimeType: String): ResultLauncher<*, *, Uri?> {
+    return createGetContentLauncher(mimeType).also {
         it.register(this)
     }
 }

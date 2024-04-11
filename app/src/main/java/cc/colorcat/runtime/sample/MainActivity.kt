@@ -15,6 +15,7 @@ import cc.colorcat.runtime.forMedia
 import cc.colorcat.runtime.forMultipleMedia
 import cc.colorcat.runtime.forPermissions
 import cc.colorcat.runtime.forResult
+import cc.colorcat.runtime.getContent
 import cc.colorcat.runtime.launchForResult
 import cc.colorcat.runtime.sample.databinding.ActivityMainBinding
 import cc.colorcat.runtime.takePicture
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
 
     private val pickImage = forMedia(ActivityResultContracts.PickVisualMedia.ImageOnly)
 
+    private val getContent = getContent("*/*")
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         setupRequestPermissions()
         setupRequestScreenCapture()
         setupTakePicture()
+        setupGetContent()
     }
 
     private fun setupPickImage() {
@@ -154,6 +158,15 @@ class MainActivity : AppCompatActivity() {
             "All permissions have been granted."
         } else {
             "${deniedPermissions.contentToString()} have been denied."
+        }
+    }
+
+    private fun setupGetContent() {
+        binding.getContent.setOnClickListener {
+            lifecycleScope.launch {
+                val uri = getContent.launch()
+                Log.d(TAG, "GET Content: $uri")
+            }
         }
     }
 

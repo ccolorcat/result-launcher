@@ -57,3 +57,9 @@ internal fun createTakePictureLauncher(provideUri: () -> Uri): ResultLauncher<Ur
     }
     return ResultLauncher(contract = contract, provideInput = provideUri) { it }
 }
+
+
+internal fun createGetContentLauncher(mimeType: String): ResultLauncher<String, Uri?, Uri?> {
+    val contract = ActivityResultContracts.GetContent()
+    return ResultLauncher(contract, mimeType) { it }
+}
